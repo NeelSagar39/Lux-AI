@@ -1,0 +1,13 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "D:\Lux\agent.py", line 98, in agent
+    build_city(player,nearest_city_tile,unit)
+  File "D:\Lux\agent.py", line 33, in build_city
+    available = check_avalaibility(last_city_tile,player)
+  File "D:\Lux\agent.py", line 26, in check_avalaibility
+    if (nearest_city_tile[0]+1,nearest_city_tile[1]) not in player.city.citytiles:
+TypeError: 'CityTile' object is not subscriptable

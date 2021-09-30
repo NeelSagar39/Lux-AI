@@ -1,0 +1,12 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "D:\Lux\agent.py", line 96, in agent
+    build_city(player,nearest_city_tile)
+  File "D:\Lux\agent.py", line 28, in build_city
+    f.write(str(player.cities.items(), nearest_city_tile)+'current\n')
+TypeError: str() argument 2 must be str, not CityTile
+Agent timed out

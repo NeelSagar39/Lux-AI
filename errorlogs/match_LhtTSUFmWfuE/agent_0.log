@@ -1,0 +1,10 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "D:\Lux\agent.py", line 56, in agent
+    if unit.get_cargo_space_left() > 0 and player.city_tile_count == player.units.count():
+TypeError: count() takes exactly one argument (0 given)
+Agent timed out

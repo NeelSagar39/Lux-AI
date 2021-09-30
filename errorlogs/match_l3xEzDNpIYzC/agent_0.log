@@ -1,0 +1,12 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "D:\Lux\agent.py", line 99, in agent
+    build_city(player,nearest_city_tile,unit)
+  File "D:\Lux\agent.py", line 31, in build_city
+    f.write(str(player.values[-1])+str(nearest_city_tile.pos)+'current\n')
+AttributeError: 'Player' object has no attribute 'values'
+Agent timed out

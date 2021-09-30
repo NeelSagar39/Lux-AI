@@ -1,0 +1,12 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "D:\Lux\agent.py", line 94, in agent
+    nearest_city_tile = get_nearest_city_tile(player,unit)
+  File "D:\Lux\agent.py", line 34, in get_nearest_city_tile
+    if dist < closest_dist:
+UnboundLocalError: local variable 'closest_dist' referenced before assignment
+Agent timed out
