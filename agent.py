@@ -90,7 +90,7 @@ def agent(observation, configuration):
             closest_dist = math.inf
             closest_resource_tile = None
             
-            if unit.get_cargo_space_left() > 0 and player.city_tile_count == len(player.units) and build_location == None:
+            if unit.get_cargo_space_left() > 0 and player.city_tile_count == len(player.units):
                 # if the unit is a worker and we have space in cargo, lets find the nearest resource tile and try to mine it
                 for resource_tile in resource_tiles:
                     if resource_tile.resource.type == Constants.RESOURCE_TYPES.COAL and not player.researched_coal(): continue
@@ -110,8 +110,8 @@ def agent(observation, configuration):
                     build_city(player,nearest_city_tile,unit)
                 
             
-            elif build_location:
-                if unit.pos == build_location.pos and unit.can_act():
+            elif build_location and unit.get_cargo_space_left()  == 0:
+                if unit.pos == build_location.pos and unit.can_act() and player.city_tile_count == len(player.units):
                     actions.append(unit.build_city())
                     with open(logfile,"a") as f:
                         f.write(str(build_location.pos)+' Completed Building\n')
@@ -122,6 +122,8 @@ def agent(observation, configuration):
 
             else:
                 # if unit is a worker and there is no cargo space left, and we have cities, lets return to them
+                with open(logfile,"a") as f:
+                        f.write(f'{unit.get_cargo_space_left() > 0} {player.city_tile_count} {len(player.units)} {build_location} ELSE to do \n')
                 if len(player.cities) > 0:
                     closest_dist = math.inf
                     closest_city_tile = get_nearest_city_tile(player,unit)
