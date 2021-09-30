@@ -1,0 +1,16 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "D:\Lux\agent.py", line 113, in agent
+    move_dir = unit.pos.direction_to(build_location)
+  File "D:\Lux\lux\game_map.py", line 95, in direction_to
+    closest_dist = self.distance_to(target_pos)
+  File "D:\Lux\lux\game_map.py", line 62, in distance_to
+    return self - pos
+  File "D:\Lux\lux\game_map.py", line 56, in __sub__
+    return abs(pos.x - self.x) + abs(pos.y - self.y)
+AttributeError: 'Cell' object has no attribute 'x'
+Agent timed out

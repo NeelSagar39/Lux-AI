@@ -1,0 +1,10 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "D:\Lux\agent.py", line 111, in agent
+    if unit.pos == build_location.pos and unit.can_act() and unit.can_build():
+TypeError: can_build() missing 1 required positional argument: 'game_map'
+Agent timed out

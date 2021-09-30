@@ -13,6 +13,10 @@ logfile = "agent.log"
 
 open(logfile,"w")
 
+build_location = None
+unit_started_to_move = False
+
+
 def get_nearest_resource(height,width):
         resource_tiles: list[Cell] = []
         for y in range(height):
@@ -23,20 +27,24 @@ def get_nearest_resource(height,width):
         return resource_tiles
     
 def check_avalaibility(nearest_city_tile,player):
+    #N,S,E,W,NW,SE,SW,NW
     dirs = [(1,0), (0,1), (-1,0), (0,-1),(1,-1), (-1,1), (-1,-1),(1,1)]
-    potential_square = game_state.map.get_cell()
-    if (nearest_city_tile[0]+1,nearest_city_tile[1]) not in player.city.citytiles:
-        return (nearest_city_tile[0]+1,nearest_city_tile[1])
+    for d in dirs:
+        potential_square = game_state.map.get_cell(nearest_city_tile.pos.x+d[0],nearest_city_tile.pos.y+d[1])
+        if potential_square.resource == None and potential_square.road == 0 and potential_square.citytile == None:
+            return potential_square
+    return None
         
 
 
 def build_city(player,nearest_city_tile,unit):
+    global build_location
     last_city_tile = list(player.cities.values())[-1].citytiles[-1]
-    available = check_avalaibility(last_city_tile,player)
     # available = True
     # unit.
-    with open(logfile,"a") as f:
-        f.write(str(available)+str(nearest_city_tile.pos)+'current\n')
+    available = check_avalaibility(last_city_tile,player)
+    build_location = available
+    
         
 def get_nearest_city_tile(player,unit):
     closest_dist = math.inf
@@ -53,6 +61,7 @@ def get_nearest_city_tile(player,unit):
 
 
 def agent(observation, configuration):
+    global build_location
     global game_state
 
     ### Do not edit ###
@@ -72,7 +81,6 @@ def agent(observation, configuration):
     width, height = game_state.map.width, game_state.map.height
 
 
-    
     
     resource_tiles = get_nearest_resource(height,width)
 
@@ -95,9 +103,20 @@ def agent(observation, configuration):
                     actions.append(unit.move(unit.pos.direction_to(closest_resource_tile.pos)))
             # elif unit.get_cargo_space_left() >= 100 and player.city_tile_count != player.units.count():
                 
-            elif unit.get_cargo_space_left()  == 0 and  unit.is_worker() and  player.city_tile_count == len(player.units): 
+            elif unit.get_cargo_space_left()  == 0 and  unit.is_worker() and  player.city_tile_count == len(player.units) and build_location == None: 
                 nearest_city_tile = get_nearest_city_tile(player,unit)
                 build_city(player,nearest_city_tile,unit)
+                
+            
+            elif build_location:
+                if unit.pos == build_location.pos and unit.can_act():
+                    actions.append(unit.build_city())
+                    build_location = None
+                    continue
+                with open(logfile,"a") as f:
+                    f.write(str(build_location)+'current\n')
+                move_dir = unit.pos.direction_to(build_location.pos)
+                actions.append(unit.move(move_dir))
 
             else:
                 # if unit is a worker and there is no cargo space left, and we have cities, lets return to them
