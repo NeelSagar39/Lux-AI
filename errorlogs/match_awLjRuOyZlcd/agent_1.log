@@ -1,0 +1,10 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "D:\Lux\agent.py", line 114, in agent
+    elif build_location and unit.cargo >=100:
+TypeError: '>=' not supported between instances of 'Cargo' and 'int'
+Agent timed out

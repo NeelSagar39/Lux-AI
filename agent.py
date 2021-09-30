@@ -90,7 +90,7 @@ def agent(observation, configuration):
             closest_dist = math.inf
             closest_resource_tile = None
             
-            if unit.get_cargo_space_left() > 0 and player.city_tile_count == len(player.units):
+            if unit.get_cargo_space_left() > 0 and player.city_tile_count == len(player.units) and build_location == None:
                 # if the unit is a worker and we have space in cargo, lets find the nearest resource tile and try to mine it
                 for resource_tile in resource_tiles:
                     if resource_tile.resource.type == Constants.RESOURCE_TYPES.COAL and not player.researched_coal(): continue
@@ -101,20 +101,22 @@ def agent(observation, configuration):
                         closest_resource_tile = resource_tile
                 if closest_resource_tile is not None:
                     actions.append(unit.move(unit.pos.direction_to(closest_resource_tile.pos)))
+
+                with open(logfile,"a") as f:
+                        f.write('Nothing to do \n')
             # elif unit.get_cargo_space_left() >= 100 and player.city_tile_count != player.units.count():
-                
             elif unit.get_cargo_space_left()  == 0 and  unit.is_worker() and  player.city_tile_count == len(player.units) and build_location == None: 
-                nearest_city_tile = get_nearest_city_tile(player,unit)
-                build_city(player,nearest_city_tile,unit)
+                    nearest_city_tile = get_nearest_city_tile(player,unit)
+                    build_city(player,nearest_city_tile,unit)
                 
             
             elif build_location:
                 if unit.pos == build_location.pos and unit.can_act():
                     actions.append(unit.build_city())
+                    with open(logfile,"a") as f:
+                        f.write(str(build_location.pos)+' Completed Building\n')
                     build_location = None
                     continue
-                with open(logfile,"a") as f:
-                    f.write(str(build_location)+'current\n')
                 move_dir = unit.pos.direction_to(build_location.pos)
                 actions.append(unit.move(move_dir))
 
@@ -126,6 +128,14 @@ def agent(observation, configuration):
                     if closest_city_tile is not None:
                         move_dir = unit.pos.direction_to(closest_city_tile.pos)
                         actions.append(unit.move(move_dir))
+
+    if player.city_tile_count != len(player.units):
+            for k, city in player.cities.items():
+                for city_tile in city.citytiles:
+                    if city_tile.can_act():
+                        actions.append(city_tile.build_worker())
+
+
             
     # you can add debug annotations using the functions in the annotate object
     # actions.append(annotate.circle(0, 0))
