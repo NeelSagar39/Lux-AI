@@ -11,3 +11,4 @@ Traceback (most recent call last):
   File "D:\Lux\agent.py", line 26, in check_avalaibility
     if (nearest_city_tile[0]+1,nearest_city_tile[1]) not in player.city.citytiles:
 TypeError: 'CityTile' object is not subscriptable
+Agent timed out
